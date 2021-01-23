@@ -1,0 +1,148 @@
+@font-face{
+    font-family: Quicksand;
+    src: url('../fonts/Quicksand-Bold.ttf')  format('truetype');
+}
+
+body {
+    margin: 0;
+    font-family: Quicksand !important; 
+}
+
+.container{
+    display: grid;
+    grid-template-columns: 19.6% 80.4%;
+}
+
+.blueBar{
+    height: 100vh;
+    box-shadow: 0.313vw 0 0.521vw 0 rgba(0, 0, 0, 0.36);
+    display: inline;
+    position: relative;
+    background: linear-gradient(323deg, #001b48 0%, #02457a 45%, #018abe 100%);
+}
+
+.mainScreen{
+    display: inline;
+    position: relative;
+    height: 100vh;
+}
+
+.inputs{
+    background-color: #ffffff;
+    display: block;
+    position: relative;
+    box-shadow: 0 0.27vh 0.313vw 0 rgba(0, 0, 0, 0.16);
+    border-bottom-right-radius: 3.255vw;
+    width: 100%;
+    height: 55vh;
+    overflow: auto;
+}
+
+form{
+    font-size: 2.5vh;
+    color: #018ABE;
+    margin-top: 2.13vh;
+    margin-left: 5%;
+    margin-right: 10%;
+    height: 35vh;
+}
+
+form p{
+    font-size: 3vh;
+    color:#001b48
+}
+
+.title{
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 1.01vh;
+    padding-top: 0.3vh;
+    padding-bottom: 0.3vh;
+    border-radius: 2.813vw;
+    box-shadow: 0 0.64vh 0.521vw 0 rgba(0, 0, 0, 0.16);
+    background-color: #ffffff;
+    text-align: center;
+    font-size: 5vh;
+    color:#001b48;
+    text-shadow: -0.052vw 0.37vh 0.74vh rgba(0, 0, 0, 0.15);
+}
+
+.select{
+    padding: 0.4vw;
+    outline: none;
+    margin-left: 0.5vw;
+    border-radius: 0.4em;
+    border: solid 0.15em #001b48;;
+    font-family: Quicksand;
+    color: #001b48;
+    font-size: 2.5vh;
+    cursor: pointer;
+}
+
+.select option{
+    border: none;
+}
+
+.userNumbers p{
+    font-size: 1.5vh;
+}
+
+.userNumbers input{
+    outline: none;
+    font-family: QuickSand;
+    font-size: 2.5vh;
+    margin-top: 0.5vh;
+    width: 16vw;
+    padding: 0.8vh;
+    padding-bottom: 0.8vh;
+    color: #001b48;
+    border-radius: 0.2em;
+    border: solid 0.13em #001b48;
+}
+
+.input-button-group{
+    position: absolute;
+    margin-bottom: 4.5vh;
+    margin-right: 1.1vw;
+    bottom:0;
+}
+
+.button {
+    font-family: QuickSand;
+    font-size: 2.3vh;
+    outline: none;
+    cursor: pointer;
+    border: none;
+    padding: 1vw;
+    padding-left: 1.5vw;
+    padding-right: 1.5vw;
+    border-radius: 1.5em;
+}
+
+.button.start{
+    margin-right: 1vw;
+    box-shadow: 0 1em 2em 0 rgba(0, 0, 0, 0.16);
+    background-color: #001b48;
+    color:#d6e8ee;
+}
+
+.start svg{
+    width: 1.2vw;
+    height: 1.2vw;
+    vertical-align: sub;
+    margin-left: 0.5vw;
+}
+
+.start svg path{
+    fill:#d6e8ee;
+}
+
+.button.restart{
+    margin-right: auto;
+    border: solid 0.15em #001b48;
+    padding: 0.85vw;
+    background-color: white;
+    color:#001b48;
+    box-shadow: 0 1em 2em 0 rgba(0, 0, 0, 0.16);
+}
