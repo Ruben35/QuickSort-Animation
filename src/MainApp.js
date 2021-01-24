@@ -1,5 +1,5 @@
 import React from 'react';
-import Controls from './sections/controls.jsx';
+import Inputs from './sections/inputs.jsx';
 import ArrayActualState from './sections/arrayActualState.jsx';
 import MainAnimation from "./sections/mainAnimation.jsx";
 import CallsQuickSort from "./sections/callsQuickSort.jsx";
@@ -33,7 +33,7 @@ class MainApp extends React.Component{
             <div className="title">
               QuickSort
             </div>
-              <Controls onChange={this.getArrayFromControls}/>
+              <Inputs onChange={this.getArrayFromControls}/>
           </div>
           <Explication/>
         </div>
@@ -79,6 +79,9 @@ class MainScreen extends React.Component{
         <div className="screenCenter">
           <MainAnimation array={[2,4,3,7,8,10,9,18,11,1,5,6]}/>  
           <CallsQuickSort listCalls={listCalls}/>
+        </div>
+        <div className="screenCenter">
+
         </div>
       </div>
     );

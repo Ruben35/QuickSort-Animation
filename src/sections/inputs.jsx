@@ -73,7 +73,7 @@ class UserNumbers extends React.Component{
   }
 }
 
-class Controls extends React.Component{
+class Inputs extends React.Component{
     constructor(props){
       super(props)
       this.state={
@@ -187,4 +187,4 @@ class Controls extends React.Component{
     }
   }
 
-export default Controls;
+export default Inputs;
