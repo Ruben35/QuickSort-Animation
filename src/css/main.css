@@ -278,9 +278,37 @@ form p{
     margin-top: 1vh;
 }
 
-.mainAnimation div{
-    width: 100%;
-    display: block;
+.mainAnimation h2{
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    text-align: center;
+    color: #001b48;
+    font-size: 4.5vh;
+    margin-bottom: 1vh;
+    margin: 0;
+}
+
+.mainAnimation h2 .pointer{
+   width: 3.5vw;
+   margin-right: 1vw;
+}
+
+.mainAnimation h2 + h2{
+    color: #018abe;
+}
+
+.mainAnimation div:not(div+div){
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.mainAnimation div + div{
+    margin-top:3vh;
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .mainAnimation table{
@@ -288,7 +316,6 @@ form p{
     margin-right: auto;
     border-spacing: .2vw;
 }
-
 
 .mainAnimation tr:nth-child(2) td:not(:nth-child(1)){
     width: 2.8vw;
@@ -326,7 +353,7 @@ form p{
 }
 
 .pointer{
-    width: 5vh;
+    width:2.7vw;
 }
 
 .pointer polygon{
@@ -339,6 +366,7 @@ form p{
 .pointer.S polygon{
     fill:#018abe;
 }
+
 
 /*
     callsQuickSort

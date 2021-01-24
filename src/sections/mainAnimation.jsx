@@ -100,6 +100,12 @@ class MainAnimation extends React.Component{
                         </tbody>
                     </table>
                 </div>
+                <div>
+                    <div>
+                    <h2><Darrow className="pointer"/>Índice que recorre el arreglo</h2>
+                    <h2><Darrow className="pointer S"/>Elemento más pequeño</h2>
+                    </div>
+                </div>
             </div>
         );
     }
