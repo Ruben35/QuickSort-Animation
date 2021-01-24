@@ -3,6 +3,8 @@ import Inputs from './sections/inputs.jsx';
 import ArrayActualState from './sections/arrayActualState.jsx';
 import MainAnimation from "./sections/mainAnimation.jsx";
 import CallsQuickSort from "./sections/callsQuickSort.jsx";
+import Controls from "./sections/controls.jsx";
+import AnimationExplication from "./sections/animationExplication.jsx";
 
 class MainApp extends React.Component{
   constructor(props){
@@ -81,7 +83,8 @@ class MainScreen extends React.Component{
           <CallsQuickSort listCalls={listCalls}/>
         </div>
         <div className="screenCenter">
-
+          <Controls/>
+          <AnimationExplication/>
         </div>
       </div>
     );

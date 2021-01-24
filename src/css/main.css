@@ -269,6 +269,7 @@ form p{
     width: 55vw;
     height: 55vh;
     flex-direction: column;
+    
 }
 
 .mainAnimation h1{
@@ -452,4 +453,137 @@ form p{
 
 .invisible{
     visibility: hidden;
+}
+
+/* 
+    Controls
+*/
+.Controls{
+    display: grid;
+    margin-top: 3.2vh;
+    margin-left: 3.5vw;
+    width: 45vw;
+    height: 17vh;
+    grid-template-columns: 33.46% 66.55%;
+}
+
+.containerButtons,.containSlider{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.containSlider{
+    flex-direction: column;
+}
+.containSlider div{
+    width: 100%;
+}
+
+.containSlider div span{
+    float: left;
+    font-size: 2.5vh;
+    margin-left: -1.75vw;
+    color:#02457a;
+    cursor: default;
+}
+
+.containSlider div span + span{
+    float: right;
+    margin-left: 0vw !important;
+    margin-right: -2.2vw;
+}
+
+.ffarrow,.arrow{
+    width: 3vw;
+    height: auto;
+    -webkit-filter: drop-shadow( 0 4px 5px rgba(0, 0, 0, 0.25));
+    filter: drop-shadow(0 4px 5px rgba(0, 0, 0, 0.25));
+    cursor: pointer;
+    margin-right: 1vw;
+}
+
+.ffarrow:first-of-type{
+    margin-left: 5vw;
+}
+
+.arrow{
+    width: 2.8vw;
+}
+
+.L{
+    transform: rotate(180deg);
+}
+
+.buttonPlayPause{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1em;
+    width: 4vw;
+    height: 8vh;
+    box-shadow: 0 8px 13px 0 rgba(0, 0, 0, 0.2);
+    background-image: linear-gradient(to bottom, #02457a, #001b48);
+    cursor: pointer;
+    margin-right: 1vw;
+}
+
+.buttonPlayPause svg{
+    width: 2vw;
+    height: auto;
+}
+
+/* .buttonPlayPause svg.pause{
+    width: 3vw;
+    height: auto;
+} */
+
+.buttonPlayPause svg path{
+    fill:#d6e8ee;
+}
+
+.ffarrow path, .arrow path{
+    fill:#001b48;
+}
+
+/* 
+    AnimationExplication
+*/
+.AnimationExplication{
+    display: flex;
+    width: 25vw;
+    height: 17vh;
+    margin-left: 3.5vw;
+    margin-top: 3.2vh;
+    background-image: linear-gradient(to bottom, #02457a, #001b48);
+    border-radius: 2em;
+    flex-direction: column;
+}
+
+.AnimationExplication h2{
+    font-size: 3vh;
+    margin-left: 1.25vw;
+    margin-top: 1vh;
+    margin-bottom: 0.5vh;
+    color:#97cadb;
+    -webkit-touch-callout: none; 
+    -webkit-user-select: none; 
+     -khtml-user-select: none; 
+       -moz-user-select: none; 
+        -ms-user-select: none; 
+            user-select: none; 
+}
+
+.AnimationExplication p{
+    font-size: 2.5vh;
+    margin-left: 1.25vw;
+    margin-right: 1.25vw;
+    margin-top: 0;
+    color:#d6e8ee;
+    -webkit-touch-callout: none; 
+    -webkit-user-select: none; 
+     -khtml-user-select: none; 
+       -moz-user-select: none; 
+        -ms-user-select: none; 
+            user-select: none; 
 }
