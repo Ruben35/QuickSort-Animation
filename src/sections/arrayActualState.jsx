@@ -17,7 +17,7 @@ class ArrayActualState extends React.Component{
                 <div className="array">
                     {
                         this.state.array.map((item,i)=>
-                        <div className="element-Array" id={item} key={item}>
+                        <div className="element-Array" id={item} key={i}>
                             {item}
                         </div>)
                     }

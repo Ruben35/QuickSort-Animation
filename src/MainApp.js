@@ -1,7 +1,8 @@
 import React from 'react';
 import Controls from './sections/controls.jsx';
 import ArrayActualState from './sections/arrayActualState.jsx';
-import MainAnimation from "./sections/mainAnimation.jsx"
+import MainAnimation from "./sections/mainAnimation.jsx";
+import CallsQuickSort from "./sections/callsQuickSort.jsx";
 
 class MainApp extends React.Component{
   constructor(props){
@@ -57,9 +58,7 @@ class MainScreen extends React.Component{
       <div className="mainScreen">
         <ArrayActualState array={[2,4,3,7,8,10,9,8,11,1,5,6]}/>
         <MainAnimation/>  
-        <div>
-          Hola
-        </div>
+        <CallsQuickSort/>
       </div>
     );
   }

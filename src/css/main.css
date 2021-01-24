@@ -253,3 +253,22 @@ form p{
     font-size: 4vh;
     color:#001b48;
 }
+
+/*
+    mainAnimation
+*/
+.mainAnimation{
+    display: inline;
+}
+
+
+
+
+
+
+/*
+    callsQuickSort
+*/
+.callsQuickSort{
+    display: inline;
+}
