@@ -15,10 +15,14 @@ class MainAnimation extends React.Component{
             array:this.props.array,
             pivot:this.props.array[this.props.array.length-1],
             arrayPointer:['P'].concat(array),
-            arraySmaller:['S'].concat(array)
+            arraySmaller:['S'].concat(array),
+            indexPointer:0,
+            indexSmaller:0
         })
 
         this.newSwap=this.newSwap.bind(this);
+        this.click=this.click.bind(this);
+        this.cllick=this.cllick.bind(this);
     }
 
     newSwap(input, index_A, index_B) {
@@ -29,6 +33,20 @@ class MainAnimation extends React.Component{
         array[index_B] = temp;
 
         return array;
+    }
+
+    click(event){
+        this.setState({
+            arrayPointer:this.newSwap(this.state.arrayPointer,this.state.indexPointer,this.state.indexPointer+1),
+            indexPointer:this.state.indexPointer+1
+        })
+    }
+
+    cllick(event){
+        this.setState({
+            arraySmaller:this.newSwap(this.state.arraySmaller,this.state.indexSmaller,this.state.indexSmaller+1),
+            indexSmaller:this.state.indexSmaller+1
+        })
     }
     
 
@@ -48,7 +66,7 @@ class MainAnimation extends React.Component{
                                 {this.state.arrayPointer.map((item,i)=>{
                                     return(
                                         <td key={item}>
-                                            {item==="P"?<Darrow/>:""}
+                                            {item==="P"?<Darrow className="pointer" onClick={this.click}/>:""}
                                         </td>
                                     );
                                 })}
@@ -73,7 +91,9 @@ class MainAnimation extends React.Component{
                             >
                                 {this.state.arraySmaller.map((item,i)=>{
                                     return(
-                                        <td key={item}>{item}</td>
+                                        <td key={item}>
+                                            {item==="S"?<Darrow className="pointer S" onClick={this.cllick}/>:""}
+                                        </td>
                                     );
                                 })}
                             </FlipMove>

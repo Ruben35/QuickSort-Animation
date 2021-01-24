@@ -289,9 +289,10 @@ form p{
     border-spacing: .2vw;
 }
 
+
 .mainAnimation tr:nth-child(2) td:not(:nth-child(1)){
-    width: 3vw;
-    height: 3vh;
+    width: 2.8vw;
+    height: 2.5vh;
     border-spacing: 1vw;
     border-radius: 8px;
     border: solid 7px #02457a;
@@ -302,10 +303,41 @@ form p{
     font-size:4.7vh;
 }
 
+.mainAnimation tr:nth-child(2) td:first-of-type,
+.mainAnimation tr:nth-child(1) td,
+.mainAnimation tr:nth-child(3) td
+{
+    width: 2.8vw;
+    height: 2.5vh;
+    border: solid 7px transparent;
+    border-top: 0px;
+    border-bottom: 0px;
+    text-align: center;
+}
+
+.mainAnimation tr:nth-child(3) td{
+    padding-top: 0.8vh !important;
+}
+
 .pivot{
     background-color: #018abe !important;
     border: solid 7px #001b48 !important;
     color: #d6e8ee !important;
+}
+
+.pointer{
+    width: 5vh;
+}
+
+.pointer polygon{
+    fill:#001b48;
+}
+
+.pointer.S{
+    transform: rotate(180deg);
+}
+.pointer.S polygon{
+    fill:#018abe;
 }
 
 /*
