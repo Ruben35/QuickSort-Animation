@@ -54,11 +54,32 @@ class MainScreen extends React.Component{
   }
 
   render(){
+
+    var listCalls=[
+      {
+        x:1,
+        y:2,
+        done:true
+      },
+      {
+        x:2,
+        y:3,
+        done:false
+      },
+      {
+        x:3,
+        y:4,
+        done:false
+      }
+    ];
+
     return(
       <div className="mainScreen">
         <ArrayActualState array={[2,4,3,7,8,10,9,8,11,1,5,6]}/>
-        <MainAnimation/>  
-        <CallsQuickSort/>
+        <div className="screenCenter">
+          <MainAnimation array={[2,4,3,7,8,10,9,18,11,1,5,6]}/>  
+          <CallsQuickSort listCalls={listCalls}/>
+        </div>
       </div>
     );
   }
