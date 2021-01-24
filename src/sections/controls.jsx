@@ -6,7 +6,7 @@ class RandomNumbers extends React.Component{
   constructor(props){
     super(props)
     this.state={
-      options:[3,4,5,6,7,8,9,10],
+      options:[3,4,5,6,7,8,9,10,11,12],
       number:props.number
     }
 
@@ -37,24 +37,36 @@ class UserNumbers extends React.Component{
   constructor(props){
     super(props);
     this.state={
-      textValue:props.textValue
+      textValue:props.textValue,
+      inputE:props.inputE
     }
 
     this.changeHandler=this.changeHandler.bind(this);
   }
 
   changeHandler(event){
+    this.setState({textValue:event.target.value});
     this.props.onChange(event.target.value);
   }
 
   render(){
+    var error;
+
+    if(this.state.inputE===0)
+      error=<p className="Error">Llena los campos</p>
+    if(this.state.inputE===1)
+      error=<p className="Error">Formato incorrecto (seperado por comas y 0&#60;n&#60;100)</p>
+    if(this.state.inputE===2)
+      error=<p className="Error">Menos de 3 o más de 12 números</p>
+    
     return (
       <div className="userNumbers">
         <br></br>
         <label>
           Valores del Array:
-          <input type="text" name="numbers" value={this.state.textValue} onChange={this.changeHandler} placeholder="Ejemplo: 2,5,4,10"/>
-        </label>   
+          <input type="text" name="numbers" className={this.state.inputE!==-1?"error":""} value={this.state.textValue} onChange={this.changeHandler} placeholder="Ejemplo: 2,5,4,10"/>
+        </label>
+        {error}   
         <p>Nota: Ingrese de 3 a 12 números</p>
       </div>
     );
@@ -68,6 +80,7 @@ class Controls extends React.Component{
         isNumberRandom:false,
         noRandom:3,
         input:"",
+        inputE:-1,
         numbers:[]
       };
 
@@ -93,19 +106,59 @@ class Controls extends React.Component{
     }
 
     startAnimation(event){
-      alert(this.state.input+""+this.state.noRandom)
+      var array=[];
+      var ok=true;
+      if(this.state.isNumberRandom){
+        for(var i=0;i<this.state.noRandom;i++){
+          array.push(Math.floor(Math.random()*(100-1))+1);
+        }
+      }else{
+        if(this.state.input===""){
+          this.setState({inputE:0})
+          ok=false;
+        }else{
+          array=this.state.input.split(',');
+          if(array.length<3 || array.length>12){
+            this.setState({inputE:2})
+            ok=false;
+          }
+          for(let n of array){
+            if(n<0 || n>99 || n===''){
+              this.setState({inputE:1})
+              ok=false;
+              break;
+            }
+          }
+
+        }
+      }
+      if(ok){
+        this.setState({inputE:-1})
+        this.setState({numbers:array})
+        this.setState({numbers:array})
+        this.props.onChange(array);
+      }
       event.preventDefault()
     }
 
     render (){
-
       const isNumberRandom=this.state.isNumberRandom;
+      var restartDisabled=false;
+      var startDisabled=false;
       let displayControl;
-      if(isNumberRandom)
+      if(isNumberRandom){
         displayControl=<RandomNumbers name="random" number={this.state.noRandom} onChange={this.obtainNumberRandom} />;
-      else
-        displayControl=<UserNumbers name="users" textValue="sdad" onChange={this.obtainInput}/>
-
+        if(this.state.numbers.length===0)
+          restartDisabled=true;
+      }
+      else{
+        if(this.state.input==="")
+          restartDisabled=true;
+        displayControl=<UserNumbers name="users" key={this.state.inputE} inputE={this.state.inputE} textValue={this.state.input} onChange={this.obtainInput}/>
+      }
+      if(this.state.numbers.length!==0){
+        startDisabled=true;
+      }
     return (
         <form>
         <p>
@@ -119,13 +172,13 @@ class Controls extends React.Component{
           </label> 
           {displayControl}
           <div className="input-button-group">
-            <button className="button start" onClick={this.startAnimation}>
+            <button className="button start" onClick={this.startAnimation} disabled={startDisabled}>
               <span>
               Empezar
               <Ffarrow/>
               </span>
             </button>
-            <button className="button restart">
+            <button className="button restart" disabled={restartDisabled}>
               Reiniciar
             </button>
             
