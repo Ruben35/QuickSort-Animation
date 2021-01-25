@@ -185,12 +185,12 @@ class MainAnimation extends React.Component{
 
   refreshNextListCalls(scriptStep){
     this.state.listCalls[this.state.listCalls.length-1].done=true;
-        this.state.listCalls.push(
-          {
-            text:"QuickSort("+scriptStep.start+","+scriptStep.end+")",
-            done:false,
-          }
-        )
+    this.state.listCalls.push(
+      {
+        text:"QuickSort("+scriptStep.start+","+scriptStep.end+")",
+        done:false,
+      }
+    )
     this.refs.callQS.refreshListCalls(this.state.listCalls)
   }
 
@@ -198,6 +198,32 @@ class MainAnimation extends React.Component{
     this.state.listCalls.pop();
     this.state.listCalls[this.state.listCalls.length-1].done=false;
     this.refs.callQS.refreshListCalls(this.state.listCalls)
+  }
+
+  cleanToFirstCall(){
+    var newarray=this.state.listCalls.slice(0,1);
+    newarray[0].done=false;
+    this.setState({
+      listCalls:newarray
+    })
+    this.refs.callQS.refreshListCalls(newarray)
+  }
+
+  putAllCalls(){
+    var allCalls=[];
+    for(var step of this.state.script){
+      if(step.oper==="quicksort"){
+        allCalls.push({
+          text:"QuickSort("+step.start+","+step.end+")",
+          done:true,
+        })
+      }
+    }
+    allCalls[allCalls.length-1].done=true;
+    this.setState({
+      listCalls:allCalls
+    })
+    this.refs.callQS.refreshListCalls(allCalls)
   }
 
   manageOperation(scriptStep,step,type){
@@ -277,11 +303,13 @@ class MainAnimation extends React.Component{
           nextStep=this.state.script.length-1;
           this.setState({actualStep:nextStep});
           this.goFinal();
+          this.putAllCalls();
       break;
       case "FBACK":
           nextStep=0;
           this.setState({actualStep:nextStep});
           this.goFirst();
+          this.cleanToFirstCall();
       break;
       default:
       break;
