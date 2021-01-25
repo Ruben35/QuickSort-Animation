@@ -533,11 +533,6 @@ form p{
     height: auto;
 }
 
-/* .buttonPlayPause svg.pause{
-    width: 3vw;
-    height: auto;
-} */
-
 .buttonPlayPause svg path{
     fill:#d6e8ee;
 }
