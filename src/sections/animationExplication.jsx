@@ -4,18 +4,27 @@ class AnimationExplication extends React.Component{
     constructor(props){
         super(props);
         this.state=({
-
+            totalPasos:this.props.totalPasos,
+            pasoActual:this.props.pasoActual+1,
+            descripcion:this.props.descripcion
         });
 
-        
+        this.refreshPasoActual=this.refreshPasoActual.bind(this)
+    }
+
+    refreshPasoActual(paso,descripcion){
+        this.setState({
+            pasoActual:paso+1,
+            descripcion:descripcion
+        })
     }
 
     render(){
 
         return(
             <div className="AnimationExplication">
-                <h2>Paso 1 de 54</h2>
-                <p>Se intercambia la posición el índice que recorre el arreglo (3) con el índice del elemento más pequeño (1)</p>
+                <h2>Paso {this.state.pasoActual} de {this.state.totalPasos}</h2>
+                <p>{this.state.descripcion}</p>
             </div>
         )
     }

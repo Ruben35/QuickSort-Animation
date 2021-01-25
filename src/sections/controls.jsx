@@ -46,10 +46,15 @@ class Controls extends React.Component{
         });
 
         this.togglePlay=this.togglePlay.bind(this);
+        this.clickControlButton=this.clickControlButton.bind(this);
     }
 
     togglePlay(){
         this.setState({play:!this.state.play});
+    }
+
+    clickControlButton(type){
+        this.props.onControl(type);
     }
 
     render(){
@@ -70,13 +75,13 @@ class Controls extends React.Component{
                     />
                 </div>
                 <div className="containerButtons">
-                    <FFarrow className="ffarrow L"/>
-                    <Arrow className="arrow L"/>
+                    <FFarrow className="ffarrow L" onClick={this.clickControlButton.bind(this,"FBACK")}/>
+                    <Arrow className="arrow L"  onClick={this.clickControlButton.bind(this,"BACK")}/>
                     <div className="buttonPlayPause" onClick={this.togglePlay}>
-                        {this.state.play?<SVGPlay/>:<SVGPause className="pause"/>}
+                        {!this.state.play?<SVGPlay/>:<SVGPause className="pause"/>}
                     </div> 
-                    <Arrow className="arrow"/>
-                    <FFarrow className="ffarrow"/>
+                    <Arrow name="NEXT" className="arrow"  onClick={this.clickControlButton.bind(this,"NEXT")}/>
+                    <FFarrow name="FNEXT" className="ffarrow"  onClick={this.clickControlButton.bind(this,"FNEXT")}/>
                 </div>
             </div>
         )

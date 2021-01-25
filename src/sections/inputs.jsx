@@ -79,7 +79,7 @@ class Inputs extends React.Component{
       this.state={
         isNumberRandom:false,
         noRandom:3,
-        input:"",
+        input:"3,5,2,9,1,4",
         inputE:-1,
         numbers:[]
       };

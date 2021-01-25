@@ -1,4 +1,7 @@
 import React from 'react';
+import FlipMove from 'react-flip-move';
+
+const FLIP_DURATION=750;
 
 class ArrayActualState extends React.Component{
     constructor(props){
@@ -6,22 +9,32 @@ class ArrayActualState extends React.Component{
         this.state={
             array:this.props.array
         };
-
+        this.update=this.update.bind(this);
     }
 
+    update(newarray){
+        this.setState({
+            array:newarray
+        })
+    }
 
     render(){
 
         return(
             <div className="containerAA">
-                <div className="array">
+                <FlipMove
+                typeName="div"
+                className="array"
+                duration={FLIP_DURATION}
+                easing="cubic-bezier(.12,.36,.14,1.2)"
+                >
                     {
                         this.state.array.map((item,i)=>
-                        <div className="element-Array" id={item} key={i}>
+                        <div className="element-Array" id={item} key={item}>
                             {item}
                         </div>)
                     }
-                </div>
+                </FlipMove>
                 <p>
                     Array Estado Actual
                 </p>
