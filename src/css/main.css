@@ -544,6 +544,7 @@ form p{
 
 .ffarrow path, .arrow path{
     fill:#001b48;
+    pointer-events: none;
 }
 
 /* 

@@ -65,7 +65,6 @@ class MainPartition extends React.Component{
             arrayPointer:this.newSwap(this.state.arrayPointer,this.state.indexPointer,newIndex),
             indexPointer:newIndex
         })
-        console.log(this.state.arrayPointer)
     }
 
     moveI(newIndex){
