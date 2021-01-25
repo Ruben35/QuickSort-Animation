@@ -58,6 +58,8 @@ class UserNumbers extends React.Component{
       error=<p className="Error">Formato incorrecto (seperado por comas y 0&#60;n&#60;100)</p>
     if(this.state.inputE===2)
       error=<p className="Error">Menos de 3 o más de 12 números</p>
+    if(this.state.inputE===3)
+      error=<p className="Error">Hay un número duplicado (solo números únicos)</p>
     
     return (
       <div className="userNumbers">
@@ -110,7 +112,11 @@ class Inputs extends React.Component{
       var ok=true;
       if(this.state.isNumberRandom){
         for(var i=0;i<this.state.noRandom;i++){
-          array.push(Math.floor(Math.random()*(100-1))+1);
+          var num;
+          do{
+            num=Math.floor(Math.random()*(100-1))+1;
+          }while(array.includes(num));
+          array.push(num);
         }
       }else{
         if(this.state.input===""){
@@ -129,7 +135,18 @@ class Inputs extends React.Component{
               break;
             }
           }
+          const count = array =>
+            array.reduce((a, b) => ({ ...a,
+              [b]: (a[b] || 0) + 1
+            }), {}) // don't forget to initialize the accumulator
 
+          const duplicates = dict =>
+            Object.keys(dict).filter((a) => dict[a] > 1)
+
+          if(duplicates(count(array)).length!==0){
+            this.setState({inputE:3})
+              ok=false;
+          }
         }
       }
       if(ok){
