@@ -173,14 +173,8 @@ class MainAnimation extends React.Component{
 
     this.handleOperationControl=this.handleOperationControl.bind(this);
     this.manageOperation=this.manageOperation.bind(this);
-    this.updateArray=this.updateArray.bind(this);
-  }
-
-  updateArray(newarray){
-    this.setState({
-      array:newarray
-    });
-    this.refs.arrayActual.update(newarray);
+    this.goFinal=this.goFinal.bind(this);
+    this.goFirst=this.goFirst.bind(this);
   }
 
   manageOperation(scriptStep,step,type){
@@ -193,14 +187,18 @@ class MainAnimation extends React.Component{
       case "Pmovej":
         this.refs.animation.enableAnimation()
         this.refs.animation.moveJ(scriptStep.j)
-        if("BACK")
+        if("BACK"){
           this.refs.animation.moveI(scriptStep.i)
+          this.refs.animation.swapNormal(scriptStep.arrayState)
+        }
       break;
       case "Pmovei":
         this.refs.animation.enableAnimation()
         this.refs.animation.moveI(scriptStep.i)
-        if("BACK")
+        if("BACK"){
           this.refs.animation.moveJ(scriptStep.j)   
+          this.refs.animation.swapNormal(scriptStep.arrayState)
+        }
       break;
       case "Pswap":
         this.refs.animation.enableAnimation()
@@ -219,6 +217,8 @@ class MainAnimation extends React.Component{
       break;
       case "Fquicksort":
         //alert("termino QuickSort");
+      break;
+      default:
       break;
     }
   }
@@ -240,10 +240,36 @@ class MainAnimation extends React.Component{
           this.manageOperation(this.state.script[nextStep],nextStep,type);
         }
       break;
+      case "FNEXT":
+          nextStep=this.state.script.length-1;
+          this.setState({actualStep:nextStep});
+          this.goFinal();
+      break;
+      case "FBACK":
+          nextStep=0;
+          this.setState({actualStep:nextStep});
+          this.goFirst();
+      break;
       default:
-
       break;
     }
+  }
+
+  goFinal(){
+    const scriptStep=this.state.script[this.state.script.length-1];
+    this.refs.animation.disableAnimation()
+    this.refs.animation.swapAndUpdate(scriptStep.start,scriptStep.end,scriptStep.arrayState,scriptStep.j,scriptStep.i,this.state.script[this.state.script.length-2].arrayState[scriptStep.end])
+    this.refs.arrayActual.update(scriptStep.arrayState)
+    this.refs.explication.refreshPasoActual(this.state.script.length-1,scriptStep.oper)
+  }
+
+  goFirst(){
+    const scriptStep=this.state.script[0];
+    this.refs.animation.disableAnimation()
+    this.refs.animation.refreshQuickSort(scriptStep.start,scriptStep.end,scriptStep.arrayState);
+    this.refs.arrayActual.update(scriptStep.arrayState)
+    this.refs.explication.refreshPasoActual(0,scriptStep.oper)
+
   }
 
   render(){
@@ -256,7 +282,6 @@ class MainAnimation extends React.Component{
           array={this.state.array}
           start={this.state.Pstart}
           end={this.state.Pend}
-          changeArray={this.updateArray}
           />
           <CallsQuickSort listCalls={this.state.listCalls}/>
         </div>
