@@ -164,7 +164,11 @@ class MainAnimation extends React.Component{
     this.state={
       array:this.props.array,
       script:this.props.script,
-      listCalls:[],
+      listCalls:[{
+        text:"QuickSort("+this.props.script[0].start+","+this.props.script[0].end+")",
+        done:false,
+      }
+      ],
       Pstart:this.props.script[0].start,
       Pend:this.props.script[0].end,
       wasABack:false,
@@ -175,6 +179,25 @@ class MainAnimation extends React.Component{
     this.manageOperation=this.manageOperation.bind(this);
     this.goFinal=this.goFinal.bind(this);
     this.goFirst=this.goFirst.bind(this);
+    this.refreshNextListCalls=this.refreshNextListCalls.bind(this);
+    this.refreshBackListCalls=this.refreshBackListCalls.bind(this);
+  }
+
+  refreshNextListCalls(scriptStep){
+    this.state.listCalls[this.state.listCalls.length-1].done=true;
+        this.state.listCalls.push(
+          {
+            text:"QuickSort("+scriptStep.start+","+scriptStep.end+")",
+            done:false,
+          }
+        )
+    this.refs.callQS.refreshListCalls(this.state.listCalls)
+  }
+
+  refreshBackListCalls(scriptStep){
+    this.state.listCalls.pop();
+    this.state.listCalls[this.state.listCalls.length-1].done=false;
+    this.refs.callQS.refreshListCalls(this.state.listCalls)
   }
 
   manageOperation(scriptStep,step,type){
@@ -183,6 +206,8 @@ class MainAnimation extends React.Component{
       case "quicksort":
         this.refs.animation.disableAnimation()
         this.refs.animation.refreshQuickSort(scriptStep.start,scriptStep.end,scriptStep.arrayState);
+        if(type==="NEXT")
+          this.refreshNextListCalls(scriptStep);
       break;
       case "Pmovej":
         this.refs.animation.enableAnimation()
@@ -211,12 +236,20 @@ class MainAnimation extends React.Component{
           this.refs.animation.swapNormal(scriptStep.arrayState)
         }
         else{
+
+          if(step===(this.state.script.length-2)){
+            this.state.listCalls[this.state.listCalls.length-1].done=false;
+            this.refs.callQS.refreshListCalls(this.state.listCalls)
+          }else{
+            this.refreshBackListCalls(scriptStep);
+          }
           this.refs.animation.swapAndUpdate(scriptStep.start,scriptStep.end,scriptStep.arrayState,scriptStep.j,scriptStep.i,this.state.script[step-1].arrayState[scriptStep.end])
         }
         this.refs.arrayActual.update(scriptStep.arrayState)
       break;
       case "Fquicksort":
-        //alert("termino QuickSort");
+          this.state.listCalls[this.state.listCalls.length-1].done=true;
+          this.refs.callQS.refreshListCalls(this.state.listCalls)
       break;
       default:
       break;
@@ -283,7 +316,7 @@ class MainAnimation extends React.Component{
           start={this.state.Pstart}
           end={this.state.Pend}
           />
-          <CallsQuickSort listCalls={this.state.listCalls}/>
+          <CallsQuickSort ref="callQS" listCalls={this.state.listCalls}/>
         </div>
         <div className="screenCenter">
           <Controls onControl={this.handleOperationControl}/>
