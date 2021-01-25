@@ -40,7 +40,7 @@ class MainApp extends React.Component{
       console.log(this.state.script);
     }
   } 
-dssdsd
+
   swap(input, index_A, index_B) {
     let temp = input[index_A];
 
@@ -51,36 +51,32 @@ dssdsd
   partition(array,low,high){
     var pivot = array[high];  
     this.state.script.push(
-      {
-        oper:"initPart",
-        start:low,
-        end:high,
-        i:(low-1),
-        j:low,
-        arrayState:array.slice(),
-      }
     )
     var i = (low - 1)  
     var j;
+    var contI=0;
+    var contJ=0;
     for (j = low; j <= high-1; j++){
+        contJ++;
         this.state.script.push(
           {
             oper:"Pmovej",
             start:low,
             end:high,
-            i:i,
-            j:j,
+            i:contI,
+            j:contJ,
             arrayState:array.slice(),
           }
         )
         if (array[j] < pivot){
+            contI++;
             this.state.script.push(
               {
                 oper:"Pmovei",
                 start:low,
                 end:high,
-                i:i,
-                j:j,
+                i:contI,
+                j:contJ,
                 arrayState:array.slice(),
               }
             )
@@ -91,8 +87,8 @@ dssdsd
                 oper:"Pswap",
                 start:low,
                 end:high,
-                i:i,
-                j:j,
+                i:contI,
+                j:contJ,
                 arrayState:array.slice(),
               }
             )
@@ -104,8 +100,8 @@ dssdsd
         oper:"PPswap",
         start:low,
         end:high,
-        i:i,
-        j:j,
+        i:contI,
+        j:contJ,
         arrayState:array.slice(),
       }
     )
@@ -119,6 +115,8 @@ dssdsd
           oper:"quicksort",
           start:start,
           end:end,
+          i:0,
+          j:0,
           arrayState:array.slice(),
         }
       )
@@ -185,37 +183,39 @@ class MainAnimation extends React.Component{
     this.refs.arrayActual.update(newarray);
   }
 
-  manageOperation(scriptStep,type,step){
+  manageOperation(scriptStep,step,type){
     this.refs.explication.refreshPasoActual(step,scriptStep.oper)
     switch(scriptStep.oper){
       case "quicksort":
-        this.setState({
-          Pstart:scriptStep.start,
-          Pend:scriptStep.end
-        })
-        this.refs.animation.refresh(scriptStep.start,scriptStep.end);
-        //alert("quicksort"+scriptStep.start+"|"+scriptStep.end);
-      break;
-      case "initPart":
-        //alert("iniciamos particion"+this.state.Pstart+"|"+this.state.Pend);
+        this.refs.animation.disableAnimation()
+        this.refs.animation.refreshQuickSort(scriptStep.start,scriptStep.end,scriptStep.arrayState);
       break;
       case "Pmovej":
-        if(type==="NEXT")
-          this.refs.animation.moveJRight();
-        else
-          this.refs.animation.moveJLeft();
+        this.refs.animation.enableAnimation()
+        this.refs.animation.moveJ(scriptStep.j)
+        if("BACK")
+          this.refs.animation.moveI(scriptStep.i)
       break;
       case "Pmovei":
-        if(type==="NEXT")
-          this.refs.animation.moveIRight();
-        else
-          this.refs.animation.moveILeft();
+        this.refs.animation.enableAnimation()
+        this.refs.animation.moveI(scriptStep.i)
+        if("BACK")
+          this.refs.animation.moveJ(scriptStep.j)   
       break;
       case "Pswap":
-        this.refs.animation.swapIJ();
+        this.refs.animation.enableAnimation()
+        this.refs.animation.swapNormal(scriptStep.arrayState)
+        this.refs.arrayActual.update(scriptStep.arrayState)
+        this.refs.arrayActual.update(scriptStep.arrayState)
       break;
       case "PPswap":
-        this.refs.animation.swapP();
+        if(type==="NEXT"){
+          this.refs.animation.swapNormal(scriptStep.arrayState)
+        }
+        else{
+          this.refs.animation.swapAndUpdate(scriptStep.start,scriptStep.end,scriptStep.arrayState,scriptStep.j,scriptStep.i,this.state.script[step-1].arrayState[scriptStep.end])
+        }
+        this.refs.arrayActual.update(scriptStep.arrayState)
       break;
       case "Fquicksort":
         //alert("termino QuickSort");
@@ -224,37 +224,20 @@ class MainAnimation extends React.Component{
   }
 
   handleOperationControl(type){
+    var nextStep;
     switch(type){
       case "NEXT":
-        if(this.state.wasABack){
-          this.manageOperation(this.state.script[this.state.actualStep],type,this.state.actualStep);
-          this.setState({wasABack:false});
-        }else if(this.state.actualStep<this.state.script.length-1){
-            var actualS=this.state.actualStep+1;
-            this.setState({actualStep:actualS});
-            this.manageOperation(this.state.script[actualS],type,actualS);
-          }else{
-            alert("ya no se puede")
-          }
-        
+        if(this.state.actualStep<this.state.script.length-1){
+          nextStep=this.state.actualStep+1;
+          this.setState({actualStep:nextStep});
+          this.manageOperation(this.state.script[nextStep],nextStep,type);
+        }
       break;
       case "BACK":
         if(this.state.actualStep!==0){
-          var actualSS=this.state.actualStep-1;
-          if(!this.state.wasABack){
-            this.setState({actualStep:actualSS});
-            this.manageOperation(this.state.script[this.state.actualStep],type,this.state.actualStep);//Deshacemos actual
-            this.manageOperation(this.state.script[actualSS],type,actualSS)//Deshacemos anterior
-            this.setState({
-              wasABack:true
-            })
-          }else{
-            this.manageOperation(this.state.script[actualSS],type,actualSS)
-          }
-          this.setState({actualStep:actualSS});
-          console.log(actualSS)
-        }else{
-          alert("ya no se puede B");
+          nextStep=this.state.actualStep-1;
+          this.setState({actualStep:nextStep});
+          this.manageOperation(this.state.script[nextStep],nextStep,type);
         }
       break;
       default:

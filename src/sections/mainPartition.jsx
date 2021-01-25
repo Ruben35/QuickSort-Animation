@@ -2,7 +2,7 @@ import React from "react";
 import FlipMove from 'react-flip-move';
 import { ReactComponent as Darrow } from '../img/down-arrow.svg';
 
-const FLIP_DURATION=750;
+var FLIP_DURATION=750;
 
 class MainPartition extends React.Component{
     constructor(props){
@@ -12,7 +12,7 @@ class MainPartition extends React.Component{
             array.push(i);
         }
         this.state=({
-            array:this.props.array,
+            array:this.props.array.slice(this.props.start,this.props.end+1),
             pivot:this.props.array[this.props.end],
             start:this.props.start,
             end:this.props.end,
@@ -23,30 +23,13 @@ class MainPartition extends React.Component{
         })
 
         this.newSwap=this.newSwap.bind(this);
-        this.moveJRight=this.moveJRight.bind(this);
-        this.moveIRight=this.moveIRight.bind(this);
-        this.moveJLeft=this.moveJLeft.bind(this);
-        this.moveILeft=this.moveILeft.bind(this);
-        this.swapIJ=this.swapIJ.bind(this);
-        this.swapP=this.swapP.bind(this);
-        this.refresh=this.refresh.bind(this);
-    }
-
-
-    refresh(start,end){
-        var array=[]
-        for(var i=start;i<end;i++){
-            array.push(i);
-        }
-        this.setState({
-            pivot:this.props.array[end],
-            start:start,
-            end:end,
-            arrayPointer:['P'].concat(array),
-            arraySmaller:['S'].concat(array),
-            indexPointer:0,
-            indexSmaller:0,
-        })
+        this.refreshQuickSort=this.refreshQuickSort.bind(this);
+        this.moveJ=this.moveJ.bind(this);
+        this.moveI=this.moveI.bind(this);
+        this.swapNormal=this.swapNormal.bind(this);
+        this.swapAndUpdate=this.swapAndUpdate.bind(this);
+        this.disableAnimation=this.disableAnimation.bind(this);
+        this.enableAnimation=this.enableAnimation.bind(this);
     }
 
     newSwap(input, index_A, index_B) {
@@ -59,50 +42,79 @@ class MainPartition extends React.Component{
         return array;
     }
 
-    moveJRight(){
+    refreshQuickSort(start,end,array){
+        var extra=[]
+        var newArray=array.slice(start,end+1);
+        for(var i=0;i<newArray.length;i++){
+            extra.push(i);
+        }
         this.setState({
-            arrayPointer:this.newSwap(this.state.arrayPointer,this.state.indexPointer,this.state.indexPointer+1),
-            indexPointer:this.state.indexPointer+1
+            array:newArray,
+            pivot:newArray[newArray.length-1],
+            start:start,
+            end:end,
+            arrayPointer:['P'].concat(extra),
+            arraySmaller:['S'].concat(extra),
+            indexPointer:0,
+            indexSmaller:0,
         })
     }
 
-    moveIRight(){
+    moveJ(newIndex){
         this.setState({
-            arraySmaller:this.newSwap(this.state.arraySmaller,this.state.indexSmaller,this.state.indexSmaller+1),
-            indexSmaller:this.state.indexSmaller+1
+            arrayPointer:this.newSwap(this.state.arrayPointer,this.state.indexPointer,newIndex),
+            indexPointer:newIndex
         })
+        console.log(this.state.arrayPointer)
     }
 
-    moveJLeft(){
+    moveI(newIndex){
         this.setState({
-            arrayPointer:this.newSwap(this.state.arrayPointer,this.state.indexPointer,this.state.indexPointer-1),
-            indexPointer:this.state.indexPointer-1
-        })
-    }
-
-    moveILeft(){
-        this.setState({
-            arraySmaller:this.newSwap(this.state.arraySmaller,this.state.indexSmaller,this.state.indexSmaller-1),
-            indexSmaller:this.state.indexSmaller-1
+            arraySmaller:this.newSwap(this.state.arraySmaller,this.state.indexSmaller,newIndex),
+            indexSmaller:newIndex
         })
     }
     
-    swapIJ(){
-        var newarray=this.newSwap(this.state.array,this.state.indexSmaller-1+this.state.start,this.state.indexPointer-1+this.state.start);
+    swapNormal(newarray){
         this.setState({
-            array:newarray
+            array:newarray.slice(this.state.start,this.state.end+1)
         })
-        this.props.changeArray(newarray);
     }
 
-    swapP(){
-        var newarray=this.newSwap(this.state.array,this.state.indexSmaller+this.state.start,this.state.end);
+    swapAndUpdate(start,end,arrayState,j,i,pivot){
+        var aP=[]
+        var aS=[]
+        var cont=0;
+        for(var k=start;k<end;k++){
+            aP.push(cont);
+            aS.push(cont);
+            cont++;
+        }
+        aP.splice(j,0,"P");
+        aS.splice(i,0,"S");
         this.setState({
-            array:newarray
+            array:arrayState.slice(start,end+1),
+            pivot:pivot,
+            start:start,
+            end:end,
+            arrayPointer:aP,
+            arraySmaller:aS,
+            indexPointer:j,
+            indexSmaller:i,
         })
-        this.props.changeArray(newarray);
     }
 
+    disableAnimation(){
+        this.setState({
+            disable:true
+        })
+    }
+
+    enableAnimation(){
+        this.setState({
+            disable:false
+        })
+    }
 
     render(){
 
@@ -116,6 +128,7 @@ class MainPartition extends React.Component{
                                 typeName="tr"
                                 duration={FLIP_DURATION}
                                 easing="cubic-bezier(.12,.36,.14,1.2)"
+                                disableAllAnimations={this.state.disable}
                             >
                                 {this.state.arrayPointer.map((item,i)=>{
                                     return(
@@ -129,9 +142,10 @@ class MainPartition extends React.Component{
                                 typeName="tr"
                                 duration={FLIP_DURATION}
                                 easing="cubic-bezier(.12,.36,.14,1.2)"
+                                disableAllAnimations={this.state.disable}
                                 >
                                 <td></td>
-                                {this.state.array.slice(this.state.start,this.state.end+1).map((item,i)=>{
+                                {this.state.array.map((item,i)=>{
                                     return(
                                     <td key={item} id={item} className={item===this.state.pivot?"pivot":""}>{item}</td>
                                     );
@@ -142,6 +156,7 @@ class MainPartition extends React.Component{
                                 typeName="tr"
                                 duration={FLIP_DURATION}
                                 easing="cubic-bezier(.12,.36,.14,1.2)"
+                                disableAllAnimations={this.state.disable}
                             >
                                 {this.state.arraySmaller.map((item,i)=>{
                                     return(
