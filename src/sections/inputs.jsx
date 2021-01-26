@@ -119,15 +119,7 @@ class Inputs extends React.Component{
     }
 
     restartAnimation(e){
-      this.setState({
-        numbers:[],
-      })
-      this.props.onChange([]);
-      this.setState({
-        input:"",
-        inputE:-1
-      })
-      
+      window.location.reload(false);
       e.preventDefault()
     }
 
@@ -219,7 +211,7 @@ class Inputs extends React.Component{
               <Ffarrow/>
               </span>
             </button>
-            <button className="button restart" disabled={restartDisabled}>
+            <button className="button restart" onClick={this.restartAnimation} disabled={restartDisabled}>
               Reiniciar
             </button>
             
