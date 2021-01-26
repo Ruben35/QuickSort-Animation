@@ -30,6 +30,49 @@ body {
     height: 100vh;
 }
 
+.initialScreen{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.initialScreen span{
+    font-size: 8vh;
+    color: #7fbec5;
+    opacity: .50;
+    -webkit-animation: breathing 3s ease-out infinite normal;
+    animation: breathing 3s ease-out infinite normal;
+    user-select: none;
+}
+
+@keyframes breathing {
+    0% {
+        -webkit-transform: scale(0.9);
+        -ms-transform: scale(0.9);
+        transform: scale(0.9);
+    }
+    
+    25% {
+        -webkit-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+    }
+    
+    60% {
+        -webkit-transform: scale(0.9);
+        -ms-transform: scale(0.9);
+        transform: scale(0.9);
+    }
+    
+    100% {
+        -webkit-transform: scale(0.9);
+        -ms-transform: scale(0.9);
+        transform: scale(0.9);
+    }
+    }
+
 /* 
     CONTROLS
 */
@@ -51,11 +94,13 @@ form{
     margin-left: 5%;
     margin-right: 10%;
     height: 35vh;
+    user-select: none;
 }
 
 form p{
     font-size: 3vh;
-    color:#001b48
+    color:#001b48;
+    user-select: none;
 }
 
 .title{
@@ -72,6 +117,7 @@ form p{
     font-size: 5vh;
     color:#001b48;
     text-shadow: -0.052vw 0.37vh 0.74vh rgba(0, 0, 0, 0.15);
+    user-select: none;
 }
 
 .select{
@@ -121,6 +167,7 @@ form p{
 .Error{
     color:#eb3636;
     margin-top: .5vh;
+    user-select: none;
 }
 
 .button {
@@ -133,6 +180,11 @@ form p{
     padding-left: 1.5vw;
     padding-right: 1.5vw;
     border-radius: 1.5em;
+    user-select: none;
+}
+
+.button:hover{
+    transform: translateY(-3px);
 }
 
 .button.start{
@@ -140,10 +192,10 @@ form p{
     box-shadow: 0 1em 2em 0 rgba(0, 0, 0, 0.16);
     background-color: #001b48;
     color:#d6e8ee;
-    -webkit-transition:all 0.5s ease-in;
-    -moz-transition:all 0.5s ease-in;
-    -o-transition:all 0.5s ease-in; 
-    transition:all 0.5s ease-in;
+    -webkit-transition:all 0.2s ease-in;
+    -moz-transition:all 0.2s ease-in;
+    -o-transition:all 0.2s ease-in; 
+    transition:all 0.2s ease-in;
 }
 
 .button.start:disabled,.button.start[disabled]{
@@ -154,6 +206,7 @@ form p{
     -moz-transition:all 0.5s ease-in;
     -o-transition:all 0.5s ease-in; 
     transition:all 0.5s ease-in;
+    transform: translateY(0px);
 }
 
 .start svg{
@@ -191,6 +244,7 @@ form p{
     -moz-transition:all 0.5s ease-in;
     -o-transition:all 0.5s ease-in; 
     transition:all 0.5s ease-in;
+    transform: translateY(0px);
 }
 
 /* 
@@ -245,6 +299,7 @@ form p{
     vertical-align:middle;
     color: #d6e8ee;
     font-size:7.8vh;
+    user-select: none;
 }
 
 .containerAA p{
@@ -252,6 +307,7 @@ form p{
     margin-bottom: 2.5vh;
     font-size: 4vh;
     color:#001b48;
+    user-select: none;
 }
 
 /*
@@ -269,7 +325,7 @@ form p{
     width: 55vw;
     height: 55vh;
     flex-direction: column;
-    
+    user-select: none;
 }
 
 .mainAnimation h1{
@@ -381,6 +437,7 @@ form p{
     width: 15vw;
     height: 55vh;
     flex-direction: column;
+    user-select: none;
 }
 
 .callsQuickSort div:first-of-type{
@@ -486,6 +543,7 @@ form p{
     margin-left: -1.75vw;
     color:#02457a;
     cursor: default;
+    user-select: none;
 }
 
 .containSlider div span + span{
@@ -501,6 +559,7 @@ form p{
     filter: drop-shadow(0 4px 5px rgba(0, 0, 0, 0.25));
     cursor: pointer;
     margin-right: 1vw;
+    transition: all .2s;
 }
 
 .ffarrow:first-of-type{
@@ -512,7 +571,7 @@ form p{
 }
 
 .L{
-    transform: rotate(180deg);
+    transform: rotate(180deg) ;
 }
 
 .buttonPlayPause{
@@ -533,6 +592,10 @@ form p{
     height: auto;
 }
 
+.buttonPlayPause svg * {
+    pointer-events: none;
+}
+
 .buttonPlayPause svg path{
     fill:#d6e8ee;
 }
@@ -541,6 +604,19 @@ form p{
     fill:#001b48;
     pointer-events: none;
 }
+
+.ffarrow *, .arrow *{
+    pointer-events: none;
+}
+
+.ffarrow.L:hover, .arrow.L:hover{
+    transform: rotate(180deg)translateY(3px)scale(1.05);
+}
+
+.ffarrow:hover:not(.L), .arrow:hover:not(.L){
+    transform: translateY(-3px)scale(1.05);
+}
+
 
 /* 
     AnimationExplication

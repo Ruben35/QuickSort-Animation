@@ -6,7 +6,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 import { ReactComponent as SVGPause } from '../img/pause.svg';
 
-
 const PrettoSlider = withStyles({
     root: {
       color: '#97cadb',
