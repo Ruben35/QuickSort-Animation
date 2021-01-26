@@ -1,0 +1,9 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="35.51" viewBox="0 0 32 35.51">
+  <g id="pause-button" transform="translate(-8.987)">
+    <g id="Group_6" data-name="Group 6" transform="translate(8.987)">
+      <path id="Path_45" data-name="Path 45" d="M13.987,0c-2.762,0-5,1.729-5,3.862V31.648c0,2.134,2.238,3.862,5,3.862s5-1.729,5-3.862V3.862C18.987,1.729,16.75,0,13.987,0Z" transform="translate(-8.987)" fill="#d6e8ee"/>
+      <path id="Path_46" data-name="Path 46" d="M31.987,0c-2.762,0-5,1.729-5,3.862V31.648c0,2.133,2.238,3.862,5,3.862s5-1.729,5-3.862V3.862C36.987,1.729,34.749,0,31.987,0Z" transform="translate(-4.987)" fill="#d6e8ee"/>
+    </g>
+  </g>
+</svg>

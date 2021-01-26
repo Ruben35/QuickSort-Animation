@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/QuickSort-Animation/static/css/main.be0b9c15.chunk.css",
+    "main.js": "/QuickSort-Animation/static/js/main.e95fecb0.chunk.js",
+    "main.js.map": "/QuickSort-Animation/static/js/main.e95fecb0.chunk.js.map",
+    "runtime-main.js": "/QuickSort-Animation/static/js/runtime-main.ecec42da.js",
+    "runtime-main.js.map": "/QuickSort-Animation/static/js/runtime-main.ecec42da.js.map",
+    "static/js/2.c83396c5.chunk.js": "/QuickSort-Animation/static/js/2.c83396c5.chunk.js",
+    "static/js/2.c83396c5.chunk.js.map": "/QuickSort-Animation/static/js/2.c83396c5.chunk.js.map",
+    "index.html": "/QuickSort-Animation/index.html",
+    "static/css/main.be0b9c15.chunk.css.map": "/QuickSort-Animation/static/css/main.be0b9c15.chunk.css.map",
+    "static/js/2.c83396c5.chunk.js.LICENSE.txt": "/QuickSort-Animation/static/js/2.c83396c5.chunk.js.LICENSE.txt",
+    "static/media/main.css": "/QuickSort-Animation/static/media/Quicksand-Bold.76f20c55.ttf",
+    "static/media/checked.827b3ffb.svg": "/QuickSort-Animation/static/media/checked.827b3ffb.svg",
+    "static/media/down-arrow.7ebb6912.svg": "/QuickSort-Animation/static/media/down-arrow.7ebb6912.svg",
+    "static/media/ffarrow.d5e3748c.svg": "/QuickSort-Animation/static/media/ffarrow.d5e3748c.svg",
+    "static/media/pause.5c6ad10d.svg": "/QuickSort-Animation/static/media/pause.5c6ad10d.svg",
+    "static/media/play.126aea10.svg": "/QuickSort-Animation/static/media/play.126aea10.svg",
+    "static/media/right-arrow.b7f95d22.svg": "/QuickSort-Animation/static/media/right-arrow.b7f95d22.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.ecec42da.js",
+    "static/js/2.c83396c5.chunk.js",
+    "static/css/main.be0b9c15.chunk.css",
+    "static/js/main.e95fecb0.chunk.js"
+  ]
+}
