@@ -160,7 +160,7 @@ class MainApp extends React.Component{
 
 function InitialScreen(){
   return (
-    <div className="initialScreen" InitialScreen>
+    <div className="initialScreen">
         <span>¡Pulsa "Empezar" para iniciar!</span>
     </div>
   )
@@ -175,20 +175,26 @@ class MainAnimation extends React.Component{
       listCalls:[{
         text:"QuickSort("+this.props.script[0].start+","+this.props.script[0].end+")",
         done:false,
-      }
+      },
       ],
       Pstart:this.props.script[0].start,
       Pend:this.props.script[0].end,
       wasABack:false,
       actualStep:0,
+      velocity:2,
+      play:false
     }
-
     this.handleOperationControl=this.handleOperationControl.bind(this);
     this.manageOperation=this.manageOperation.bind(this);
     this.goFinal=this.goFinal.bind(this);
     this.goFirst=this.goFirst.bind(this);
     this.refreshNextListCalls=this.refreshNextListCalls.bind(this);
     this.refreshBackListCalls=this.refreshBackListCalls.bind(this);
+    this.playAnimation=this.playAnimation.bind(this);
+    this.stopAnimation=this.stopAnimation.bind(this);
+    this.playing=this.playing.bind(this);
+    this.changeVelocity=this.changeVelocity.bind(this);
+    this.velocities=[0,2000,1000,750,500,250];
   }
 
   refreshNextListCalls(scriptStep){
@@ -346,6 +352,40 @@ class MainAnimation extends React.Component{
     this.refs.explication.refreshPasoActual(0,"Se realiza QuickSort de índice ("+scriptStep.start+") a índice ("+scriptStep.end+").")
   }
 
+  playing(){
+    if(this.state.actualStep<this.state.script.length-1){
+      this.handleOperationControl("NEXT");
+    }else{
+      this.stopAnimation();
+      this.refs.controls.ended();
+    }
+  }
+
+  playAnimation(){
+    console.log(this.state.velocity);
+    this.interval = setInterval(this.playing,this.velocities[this.state.velocity]);
+    this.setState({
+      play:true
+    })
+  }
+
+  stopAnimation(){
+    clearInterval( this.interval );
+    this.setState({
+      play:false
+    })
+  }
+
+  changeVelocity(value){
+    this.setState({
+      velocity: value
+    })
+    if(this.state.play){
+      clearInterval( this.interval );
+      this.playAnimation();
+    }
+  }
+
   render(){
 
     return(
@@ -360,7 +400,7 @@ class MainAnimation extends React.Component{
           <CallsQuickSort ref="callQS" listCalls={this.state.listCalls}/>
         </div>
         <div className="screenCenter">
-          <Controls onControl={this.handleOperationControl}/>
+          <Controls ref="controls" onControl={this.handleOperationControl} velocity={this.changeVelocity}  play={this.playAnimation} stop={this.stopAnimation}/>
           <AnimationExplication ref="explication" totalPasos={this.state.script.length}
            descripcion={"Se realiza QuickSort de índice ("+this.state.Pstart+") a índice ("+this.state.Pend+")."}
            pasoActual={this.state.actualStep} />

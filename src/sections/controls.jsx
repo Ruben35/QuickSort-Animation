@@ -43,23 +43,44 @@ class Controls extends React.Component{
         this.state=({
             play:false,
             isButtonDisabled:false,
+            velocity:2
         });
 
         this.togglePlay=this.togglePlay.bind(this);
         this.clickControlButton=this.clickControlButton.bind(this);
+        this.getVelocity=this.getVelocity.bind(this);
+        this.ended=this.ended.bind(this);
     }
 
     togglePlay(){
+        if(this.state.play){
+            this.props.stop();
+            this.setState({
+                isButtonDisabled:false
+            });
+        }else{
+            this.props.play();
+            this.setState({
+                isButtonDisabled:true
+            });
+        }
         this.setState({play:!this.state.play});
     }
 
     clickControlButton(type){
-        this.setState({
-            isButtonDisabled: true
-        });
-        setTimeout(() => this.setState({ isButtonDisabled: false }), 750);
-
         this.props.onControl(type);
+    }
+
+    getVelocity(event,value){
+        console.log(value)
+        this.props.velocity(value);
+    }
+
+    ended(){
+        this.setState({play:!this.state.play});
+        this.setState({
+            isButtonDisabled:false
+        });
     }
 
     render(){
@@ -77,12 +98,13 @@ class Controls extends React.Component{
                         marks
                         min={1}
                         max={5}
+                        onChange={this.getVelocity}
                     />
                 </div>
                 <div className="containerButtons">
                     <FFarrow className="ffarrow L" onClick={this.clickControlButton.bind(this,"FBACK")} disabled={this.state.isButtonDisabled}/>
                     <Arrow className="arrow L"  onClick={this.clickControlButton.bind(this,"BACK")} disabled={this.state.isButtonDisabled}/>
-                    <div className="buttonPlayPause" onClick={this.togglePlay} disabled={this.state.isButtonDisabled}>
+                    <div className="buttonPlayPause" onClick={this.togglePlay}>
                         {!this.state.play?<SVGPlay/>:<SVGPause className="pause"/>}
                     </div> 
                     <Arrow name="NEXT" className="arrow"  onClick={this.clickControlButton.bind(this,"NEXT")} disabled={this.state.isButtonDisabled}/>

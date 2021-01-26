@@ -585,6 +585,7 @@ form p{
     background-image: linear-gradient(to bottom, #02457a, #001b48);
     cursor: pointer;
     margin-right: 1vw;
+    transition: all .2s;
 }
 
 .buttonPlayPause svg{
@@ -598,6 +599,10 @@ form p{
 
 .buttonPlayPause svg path{
     fill:#d6e8ee;
+}
+
+.buttonPlayPause:hover{
+    transform: translateY(-3px)scale(1.1);
 }
 
 .ffarrow path, .arrow path{
@@ -615,6 +620,11 @@ form p{
 
 .ffarrow:hover:not(.L), .arrow:hover:not(.L){
     transform: translateY(-3px)scale(1.05);
+}
+
+.ffarrow:disabled, .arrow:disabled, .ffarrow[disabled], .arrow[disabled],.ffarrow[disabled] *, .arrow[disabled] *{
+    pointer-events: none;
+    opacity: .9;
 }
 
 
