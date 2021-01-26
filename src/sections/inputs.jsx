@@ -42,6 +42,7 @@ class UserNumbers extends React.Component{
     }
 
     this.changeHandler=this.changeHandler.bind(this);
+    this.clean=this.clean.bind(this);
   }
 
   changeHandler(event){
@@ -49,22 +50,33 @@ class UserNumbers extends React.Component{
     this.props.onChange(event.target.value);
   }
 
+  clean(){
+    this.setState(
+      {
+        inputE:-1,
+        textValue:""
+      }
+    )
+  }
+
   render(){
     var error;
 
     if(this.state.inputE===0)
-      error=<p className="Error">Llena los campos</p>
+      error=<p className="Error">Error: Llena los campos</p>
     if(this.state.inputE===1)
-      error=<p className="Error">Formato incorrecto (seperado por comas y 0&#60;n&#60;100)</p>
+      error=<p className="Error">Error: Formato incorrecto (seperado por comas y 0&#60;n&#60;100)</p>
     if(this.state.inputE===2)
-      error=<p className="Error">Menos de 3 o más de 12 números</p>
+      error=<p className="Error">Error: Menos de 3 o más de 12 números</p>
+    if(this.state.inputE===3)
+      error=<p className="Error">Error: Hay un número duplicado (solo números únicos)</p>
     
     return (
       <div className="userNumbers">
         <br></br>
         <label>
           Valores del Array:
-          <input type="text" name="numbers" className={this.state.inputE!==-1?"error":""} value={this.state.textValue} onChange={this.changeHandler} placeholder="Ejemplo: 2,5,4,10"/>
+          <input type="text" name="numbers" className={this.state.inputE!==-1?"error":""} value={this.state.textValue} onChange={this.changeHandler} placeholder="Ejemplo: 4,5,2,10"/>
         </label>
         {error}   
         <p>Nota: Ingrese de 3 a 12 números</p>
@@ -79,7 +91,7 @@ class Inputs extends React.Component{
       this.state={
         isNumberRandom:false,
         noRandom:3,
-        input:"3,5,2,9,1,4",
+        input:"",
         inputE:-1,
         numbers:[]
       };
@@ -88,6 +100,7 @@ class Inputs extends React.Component{
       this.obtainInput=this.obtainInput.bind(this)
       this.obtainNumberRandom=this.obtainNumberRandom.bind(this)
       this.startAnimation=this.startAnimation.bind(this)
+      this.restartAnimation=this.restartAnimation.bind(this)
     }
   
     changeControl(){
@@ -105,19 +118,36 @@ class Inputs extends React.Component{
       this.setState({noRandom:value});
     }
 
+    restartAnimation(e){
+      this.setState({
+        numbers:[],
+      })
+      this.props.onChange([]);
+      this.setState({
+        input:"",
+        inputE:-1
+      })
+      
+      e.preventDefault()
+    }
+
     startAnimation(event){
       var array=[];
       var ok=true;
       if(this.state.isNumberRandom){
         for(var i=0;i<this.state.noRandom;i++){
-          array.push(Math.floor(Math.random()*(100-1))+1);
+          var num;
+          do{
+            num=Math.floor(Math.random()*(100-1))+1;
+          }while(array.includes(num));
+          array.push(num);
         }
       }else{
         if(this.state.input===""){
           this.setState({inputE:0})
           ok=false;
         }else{
-          array=this.state.input.split(',');
+          array=this.state.input.split(',').map(Number);
           if(array.length<3 || array.length>12){
             this.setState({inputE:2})
             ok=false;
@@ -129,7 +159,18 @@ class Inputs extends React.Component{
               break;
             }
           }
+          const count = array =>
+            array.reduce((a, b) => ({ ...a,
+              [b]: (a[b] || 0) + 1
+            }), {}) 
 
+          const duplicates = dict =>
+            Object.keys(dict).filter((a) => dict[a] > 1)
+
+          if(duplicates(count(array)).length!==0){
+            this.setState({inputE:3})
+              ok=false;
+          }
         }
       }
       if(ok){
@@ -154,7 +195,7 @@ class Inputs extends React.Component{
       else{
         if(this.state.input==="")
           restartDisabled=true;
-        displayControl=<UserNumbers name="users" key={this.state.inputE} inputE={this.state.inputE} textValue={this.state.input} onChange={this.obtainInput}/>
+        displayControl=<UserNumbers name="users" ref="userNumbers" key={this.state.inputE} inputE={this.state.inputE} textValue={this.state.input} onChange={this.obtainInput}/>
       }
       if(this.state.numbers.length!==0){
         startDisabled=true;

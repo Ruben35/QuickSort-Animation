@@ -6,6 +6,7 @@ import CallsQuickSort from "./sections/callsQuickSort.jsx";
 import Controls from "./sections/controls.jsx";
 import AnimationExplication from "./sections/animationExplication.jsx";
 
+
 class MainApp extends React.Component{
   constructor(props){
     super(props);
@@ -22,7 +23,7 @@ class MainApp extends React.Component{
   }
 
   getArrayFromControls(value){
-    this.setState({array:value})
+      this.setState({array:value})
   }
 
   generateQuickSortScript(){
@@ -51,36 +52,33 @@ class MainApp extends React.Component{
   partition(array,low,high){
     var pivot = array[high];  
     this.state.script.push(
-      {
-        oper:"initPart",
-        start:low,
-        end:high,
-        i:(low-1),
-        j:low,
-        arrayState:array.slice(),
-      }
     )
     var i = (low - 1)  
     var j;
+    var contI=0;
+    var contJ=0;
     for (j = low; j <= high-1; j++){
+        contJ++;
         this.state.script.push(
           {
             oper:"Pmovej",
             start:low,
             end:high,
-            i:i,
-            j:j,
+            i:contI,
+            j:contJ,
             arrayState:array.slice(),
           }
         )
         if (array[j] < pivot){
+            contI++;
             this.state.script.push(
               {
                 oper:"Pmovei",
                 start:low,
                 end:high,
-                i:i,
-                j:j,
+                pivot:pivot,
+                i:contI,
+                j:contJ,
                 arrayState:array.slice(),
               }
             )
@@ -91,8 +89,8 @@ class MainApp extends React.Component{
                 oper:"Pswap",
                 start:low,
                 end:high,
-                i:i,
-                j:j,
+                i:contI,
+                j:contJ,
                 arrayState:array.slice(),
               }
             )
@@ -104,8 +102,8 @@ class MainApp extends React.Component{
         oper:"PPswap",
         start:low,
         end:high,
-        i:i,
-        j:j,
+        i:contI,
+        j:contJ,
         arrayState:array.slice(),
       }
     )
@@ -119,6 +117,8 @@ class MainApp extends React.Component{
           oper:"quicksort",
           start:start,
           end:end,
+          i:0,
+          j:0,
           arrayState:array.slice(),
         }
       )
@@ -135,10 +135,10 @@ class MainApp extends React.Component{
     if(this.state.array.length!==0){
       this.generateQuickSortScript()
       screen=<MainAnimation array={this.state.array} script={this.state.script}/>
+    }else{
+      screen=<InitialScreen/>
     }
       
-
-
     return (
       <div className="container">
         <div className="blueBar">
@@ -158,7 +158,13 @@ class MainApp extends React.Component{
   }
 }
 
-
+function InitialScreen(){
+  return (
+    <div className="initialScreen" InitialScreen>
+        <span>¡Pulsa "Empezar" para iniciar!</span>
+    </div>
+  )
+}
 
 class MainAnimation extends React.Component{
   constructor(props){
@@ -166,7 +172,11 @@ class MainAnimation extends React.Component{
     this.state={
       array:this.props.array,
       script:this.props.script,
-      listCalls:[],
+      listCalls:[{
+        text:"QuickSort("+this.props.script[0].start+","+this.props.script[0].end+")",
+        done:false,
+      }
+      ],
       Pstart:this.props.script[0].start,
       Pend:this.props.script[0].end,
       wasABack:false,
@@ -175,92 +185,165 @@ class MainAnimation extends React.Component{
 
     this.handleOperationControl=this.handleOperationControl.bind(this);
     this.manageOperation=this.manageOperation.bind(this);
-    this.updateArray=this.updateArray.bind(this);
+    this.goFinal=this.goFinal.bind(this);
+    this.goFirst=this.goFirst.bind(this);
+    this.refreshNextListCalls=this.refreshNextListCalls.bind(this);
+    this.refreshBackListCalls=this.refreshBackListCalls.bind(this);
   }
 
-  updateArray(newarray){
+  refreshNextListCalls(scriptStep){
+    this.state.listCalls[this.state.listCalls.length-1].done=true;
+    this.state.listCalls.push(
+      {
+        text:"QuickSort("+scriptStep.start+","+scriptStep.end+")",
+        done:false,
+      }
+    )
+    this.refs.callQS.refreshListCalls(this.state.listCalls)
+  }
+
+  refreshBackListCalls(scriptStep){
+    this.state.listCalls.pop();
+    this.state.listCalls[this.state.listCalls.length-1].done=false;
+    this.refs.callQS.refreshListCalls(this.state.listCalls)
+  }
+
+  cleanToFirstCall(){
+    var newarray=this.state.listCalls.slice(0,1);
+    newarray[0].done=false;
     this.setState({
-      array:newarray
-    });
-    this.refs.arrayActual.update(newarray);
+      listCalls:newarray
+    })
+    this.refs.callQS.refreshListCalls(newarray)
   }
 
-  manageOperation(scriptStep,type,step){
-    this.refs.explication.refreshPasoActual(step,scriptStep.oper)
+  putAllCalls(){
+    var allCalls=[];
+    for(var step of this.state.script){
+      if(step.oper==="quicksort"){
+        allCalls.push({
+          text:"QuickSort("+step.start+","+step.end+")",
+          done:true,
+        })
+      }
+    }
+    allCalls[allCalls.length-1].done=true;
+    this.setState({
+      listCalls:allCalls
+    })
+    this.refs.callQS.refreshListCalls(allCalls)
+  }
+
+  manageOperation(scriptStep,step,type){
     switch(scriptStep.oper){
       case "quicksort":
-        this.setState({
-          Pstart:scriptStep.start,
-          Pend:scriptStep.end
-        })
-        this.refs.animation.refresh(scriptStep.start,scriptStep.end);
-        //alert("quicksort"+scriptStep.start+"|"+scriptStep.end);
-      break;
-      case "initPart":
-        //alert("iniciamos particion"+this.state.Pstart+"|"+this.state.Pend);
+        this.refs.animation.disableAnimation()
+        this.refs.animation.refreshQuickSort(scriptStep.start,scriptStep.end,scriptStep.arrayState);
+        if(type==="NEXT")
+          this.refreshNextListCalls(scriptStep);
+        this.refs.explication.refreshPasoActual(step,"Se realiza QuickSort de índice ("+scriptStep.start+") a índice ("+scriptStep.end+").")
       break;
       case "Pmovej":
-        if(type==="NEXT")
-          this.refs.animation.moveJRight();
-        else
-          this.refs.animation.moveJLeft();
+        this.refs.animation.enableAnimation()
+        this.refs.animation.moveJ(scriptStep.j)
+        if("BACK"){
+          this.refs.animation.moveI(scriptStep.i)
+          this.refs.animation.swapNormal(scriptStep.arrayState)
+        }
+        this.refs.explication.refreshPasoActual(step,"Se mueve una posición el índice ▼ que recorre el arreglo (de "+(scriptStep.j-2)+" a "+(scriptStep.j-1)+") y se compara el elemento con el pivote.");
       break;
       case "Pmovei":
-        if(type==="NEXT")
-          this.refs.animation.moveIRight();
-        else
-          this.refs.animation.moveILeft();
+        this.refs.animation.enableAnimation()
+        this.refs.animation.moveI(scriptStep.i)
+        if("BACK"){
+          this.refs.animation.moveJ(scriptStep.j)   
+          this.refs.animation.swapNormal(scriptStep.arrayState)
+        }
+        this.refs.explication.refreshPasoActual(step,"Se mueve una posición el índice ▲ del elemento más pequeño (de "+(scriptStep.i-2)+" a "+(scriptStep.i-1)+") porque el elemento ( ▼ < pivote ).");
       break;
       case "Pswap":
-        this.refs.animation.swapIJ();
+        this.refs.animation.enableAnimation()
+        this.refs.animation.swapNormal(scriptStep.arrayState)
+        this.refs.arrayActual.update(scriptStep.arrayState)
+        this.refs.arrayActual.update(scriptStep.arrayState)
+        this.refs.explication.refreshPasoActual(step,"Se intercambia elemento más pequeño ▲ con elemento actual ▼ (posición "+(scriptStep.i-1)+" con posición "+(scriptStep.j-1)+").");
       break;
       case "PPswap":
-        this.refs.animation.swapP();
+        if(type==="NEXT"){
+          this.refs.animation.swapNormal(scriptStep.arrayState)
+        }
+        else{
+
+          if(step===(this.state.script.length-2)){
+            this.state.listCalls[this.state.listCalls.length-1].done=false;
+            this.refs.callQS.refreshListCalls(this.state.listCalls)
+          }else{
+            this.refreshBackListCalls(scriptStep);
+          }
+          this.refs.animation.swapAndUpdate(scriptStep.start,scriptStep.end,scriptStep.arrayState,scriptStep.j,scriptStep.i,this.state.script[step-1].arrayState[scriptStep.end])
+        }
+        this.refs.arrayActual.update(scriptStep.arrayState)
+        this.refs.explication.refreshPasoActual(step,"Se intercambia el pivote con una posición adelante del elemento más pequeño (posición "+(scriptStep.j)+" con posición "+(scriptStep.i)+").");
       break;
       case "Fquicksort":
-        //alert("termino QuickSort");
+          this.state.listCalls[this.state.listCalls.length-1].done=true;
+          this.refs.callQS.refreshListCalls(this.state.listCalls)
+          this.refs.explication.refreshPasoActual(step,"Finaliza ejecución total de QuickSort y el array ya se encuentra ordenado.")
+      break;
+      default:
       break;
     }
   }
 
   handleOperationControl(type){
+    var nextStep;
     switch(type){
       case "NEXT":
-        if(this.state.wasABack){
-          this.manageOperation(this.state.script[this.state.actualStep],type,this.state.actualStep);
-          this.setState({wasABack:false});
-        }else if(this.state.actualStep<this.state.script.length-1){
-            var actualS=this.state.actualStep+1;
-            this.setState({actualStep:actualS});
-            this.manageOperation(this.state.script[actualS],type,actualS);
-          }else{
-            alert("ya no se puede")
-          }
-        
+        if(this.state.actualStep<this.state.script.length-1){
+          nextStep=this.state.actualStep+1;
+          this.setState({actualStep:nextStep});
+          this.manageOperation(this.state.script[nextStep],nextStep,type);
+        }
       break;
       case "BACK":
         if(this.state.actualStep!==0){
-          var actualSS=this.state.actualStep-1;
-          if(!this.state.wasABack){
-            this.setState({actualStep:actualSS});
-            this.manageOperation(this.state.script[this.state.actualStep],type,this.state.actualStep);//Deshacemos actual
-            this.manageOperation(this.state.script[actualSS],type,actualSS)//Deshacemos anterior
-            this.setState({
-              wasABack:true
-            })
-          }else{
-            this.manageOperation(this.state.script[actualSS],type,actualSS)
-          }
-          this.setState({actualStep:actualSS});
-          console.log(actualSS)
-        }else{
-          alert("ya no se puede B");
+          nextStep=this.state.actualStep-1;
+          this.setState({actualStep:nextStep});
+          this.manageOperation(this.state.script[nextStep],nextStep,type);
         }
       break;
+      case "FNEXT":
+          nextStep=this.state.script.length-1;
+          this.setState({actualStep:nextStep});
+          this.goFinal();
+          this.putAllCalls();
+      break;
+      case "FBACK":
+          nextStep=0;
+          this.setState({actualStep:nextStep});
+          this.goFirst();
+          this.cleanToFirstCall();
+      break;
       default:
-
       break;
     }
+  }
+
+  goFinal(){
+    const scriptStep=this.state.script[this.state.script.length-1];
+    this.refs.animation.disableAnimation()
+    this.refs.animation.swapAndUpdate(scriptStep.start,scriptStep.end,scriptStep.arrayState,scriptStep.j,scriptStep.i,this.state.script[this.state.script.length-2].arrayState[scriptStep.end])
+    this.refs.arrayActual.update(scriptStep.arrayState)
+    this.refs.explication.refreshPasoActual(this.state.script.length-1,scriptStep.oper)
+    this.refs.explication.refreshPasoActual(this.state.script.length-1,"Finaliza ejecución total de QuickSort y el array ya se encuentra ordenado.");
+  }
+
+  goFirst(){
+    const scriptStep=this.state.script[0];
+    this.refs.animation.disableAnimation()
+    this.refs.animation.refreshQuickSort(scriptStep.start,scriptStep.end,scriptStep.arrayState);
+    this.refs.arrayActual.update(scriptStep.arrayState)
+    this.refs.explication.refreshPasoActual(0,"Se realiza QuickSort de índice ("+scriptStep.start+") a índice ("+scriptStep.end+").")
   }
 
   render(){
@@ -273,14 +356,13 @@ class MainAnimation extends React.Component{
           array={this.state.array}
           start={this.state.Pstart}
           end={this.state.Pend}
-          changeArray={this.updateArray}
           />
-          <CallsQuickSort listCalls={this.state.listCalls}/>
+          <CallsQuickSort ref="callQS" listCalls={this.state.listCalls}/>
         </div>
         <div className="screenCenter">
           <Controls onControl={this.handleOperationControl}/>
           <AnimationExplication ref="explication" totalPasos={this.state.script.length}
-           descripcion={this.state.script[this.state.actualStep].oper}
+           descripcion={"Se realiza QuickSort de índice ("+this.state.Pstart+") a índice ("+this.state.Pend+")."}
            pasoActual={this.state.actualStep} />
         </div>
       </div>

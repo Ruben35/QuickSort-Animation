@@ -7,6 +7,13 @@ class CallsQuickSort extends React.Component{
         this.state={
             listCalls:this.props.listCalls
         }
+        this.refreshListCalls=this.refreshListCalls.bind(this);
+    }
+
+    refreshListCalls(newList){
+        this.setState({
+            listCalls:newList
+        })
     }
 
     render(){
@@ -18,8 +25,8 @@ class CallsQuickSort extends React.Component{
                 <div>
                     {
                         this.state.listCalls.map((item,i)=>
-                            <p key={item.x+""+item.y}>
-                                QuickSort({item.x},{item.y})
+                            <p key={item.text}>
+                                {item.text}
                                 <Checked className={!item.done?"invisible":""}/>
                             </p>
                         )

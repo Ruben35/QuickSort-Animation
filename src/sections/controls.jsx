@@ -6,7 +6,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Slider from '@material-ui/core/Slider';
 import { ReactComponent as SVGPause } from '../img/pause.svg';
 
-
 const PrettoSlider = withStyles({
     root: {
       color: '#97cadb',
@@ -43,6 +42,7 @@ class Controls extends React.Component{
         super(props);
         this.state=({
             play:false,
+            isButtonDisabled:false,
         });
 
         this.togglePlay=this.togglePlay.bind(this);
@@ -54,6 +54,11 @@ class Controls extends React.Component{
     }
 
     clickControlButton(type){
+        this.setState({
+            isButtonDisabled: true
+        });
+        setTimeout(() => this.setState({ isButtonDisabled: false }), 750);
+
         this.props.onControl(type);
     }
 
@@ -75,13 +80,13 @@ class Controls extends React.Component{
                     />
                 </div>
                 <div className="containerButtons">
-                    <FFarrow className="ffarrow L" onClick={this.clickControlButton.bind(this,"FBACK")}/>
-                    <Arrow className="arrow L"  onClick={this.clickControlButton.bind(this,"BACK")}/>
-                    <div className="buttonPlayPause" onClick={this.togglePlay}>
+                    <FFarrow className="ffarrow L" onClick={this.clickControlButton.bind(this,"FBACK")} disabled={this.state.isButtonDisabled}/>
+                    <Arrow className="arrow L"  onClick={this.clickControlButton.bind(this,"BACK")} disabled={this.state.isButtonDisabled}/>
+                    <div className="buttonPlayPause" onClick={this.togglePlay} disabled={this.state.isButtonDisabled}>
                         {!this.state.play?<SVGPlay/>:<SVGPause className="pause"/>}
                     </div> 
-                    <Arrow name="NEXT" className="arrow"  onClick={this.clickControlButton.bind(this,"NEXT")}/>
-                    <FFarrow name="FNEXT" className="ffarrow"  onClick={this.clickControlButton.bind(this,"FNEXT")}/>
+                    <Arrow name="NEXT" className="arrow"  onClick={this.clickControlButton.bind(this,"NEXT")} disabled={this.state.isButtonDisabled}/>
+                    <FFarrow name="FNEXT" className="ffarrow"  onClick={this.clickControlButton.bind(this,"FNEXT")} disabled={this.state.isButtonDisabled}/>
                 </div>
             </div>
         )
