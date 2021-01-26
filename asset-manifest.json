@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/QuickSort-Animation/static/css/main.be0b9c15.chunk.css",
-    "main.js": "/QuickSort-Animation/static/js/main.0ac8de0e.chunk.js",
-    "main.js.map": "/QuickSort-Animation/static/js/main.0ac8de0e.chunk.js.map",
+    "main.js": "/QuickSort-Animation/static/js/main.8186b001.chunk.js",
+    "main.js.map": "/QuickSort-Animation/static/js/main.8186b001.chunk.js.map",
     "runtime-main.js": "/QuickSort-Animation/static/js/runtime-main.ecec42da.js",
     "runtime-main.js.map": "/QuickSort-Animation/static/js/runtime-main.ecec42da.js.map",
     "static/js/2.c83396c5.chunk.js": "/QuickSort-Animation/static/js/2.c83396c5.chunk.js",
@@ -22,6 +22,6 @@
     "static/js/runtime-main.ecec42da.js",
     "static/js/2.c83396c5.chunk.js",
     "static/css/main.be0b9c15.chunk.css",
-    "static/js/main.0ac8de0e.chunk.js"
+    "static/js/main.8186b001.chunk.js"
   ]
 }
