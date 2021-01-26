@@ -72,7 +72,6 @@ class Controls extends React.Component{
     }
 
     getVelocity(event,value){
-        console.log(value)
         this.props.velocity(value);
     }
 

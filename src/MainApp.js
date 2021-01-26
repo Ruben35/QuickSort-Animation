@@ -38,7 +38,6 @@ class MainApp extends React.Component{
           end:this.state.script[this.state.script.length-1].end
         }
       )
-      console.log(this.state.script);
     }
   } 
 
@@ -362,7 +361,6 @@ class MainAnimation extends React.Component{
   }
 
   playAnimation(){
-    console.log(this.state.velocity);
     this.interval = setInterval(this.playing,this.velocities[this.state.velocity]);
     this.setState({
       play:true
